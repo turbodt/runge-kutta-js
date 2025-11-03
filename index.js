@@ -1,8 +1,17 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var butcher_tableaux_class_1 = require("./classes/butcher-tableaux.class");
-Object.defineProperty(exports, "ButcherTableau", { enumerable: true, get: function () { return butcher_tableaux_class_1.default; } });
-Object.defineProperty(exports, "rk4ButcherTableau", { enumerable: true, get: function () { return butcher_tableaux_class_1.rk4ButcherTableau; } });
-var runge_kutta_class_1 = require("./classes/runge-kutta.class");
-Object.defineProperty(exports, "RungeKutta", { enumerable: true, get: function () { return runge_kutta_class_1.default; } });
+var butcher_tableaux_1 = require("./butcher-tableaux");
+Object.defineProperty(exports, "ButcherTableau", { enumerable: true, get: function () { return butcher_tableaux_1.ButcherTableau; } });
+__exportStar(require("./runge-kutta"), exports);
+__exportStar(require("./tables"), exports);
 //# sourceMappingURL=index.js.map
