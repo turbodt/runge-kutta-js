@@ -1,0 +1,111 @@
+class l {
+  constructor(e) {
+    this.order = e, this.data = new Float64Array(
+      this.order * this.order + this.order + this.order
+    ), this.a = [];
+    for (let r = 0; r < this.order; r++)
+      this.a.push(
+        this.data.subarray(r * this.order, (r + 1) * this.order)
+      );
+    this.b = this.data.subarray(
+      this.order * this.order,
+      this.order * (1 + this.order)
+    ), this.c = this.data.subarray(
+      this.order * (1 + this.order),
+      this.order * (2 + this.order)
+    );
+  }
+  a;
+  b;
+  c;
+  data;
+  toString() {
+    let e = "";
+    for (let r = 0; r < this.order; r++)
+      e += `${this.c[r]} : `, e += `${this.a[r].join(" ")}`, e += `
+`;
+    return e += `	 : ${this.b.join(" ")}
+`, e;
+  }
+  makeItConsistent() {
+    return this.a.forEach((e, r) => {
+      this.c[r] = 0;
+      for (let a = 0; a < this.order; a++)
+        this.c[r] += e[a];
+    }), this;
+  }
+}
+class u {
+  constructor(e, r) {
+    this.butcherTableau = e, this.f = r;
+  }
+  get order() {
+    return this.butcherTableau.order;
+  }
+  stepInto(e, r, a, h) {
+    const i = new Array(this.order);
+    for (let s = 0; s < this.order; s++)
+      i[s] = this.k(s, e, r, a, i);
+    for (let s = 0; s < this.order; s++)
+      for (let o = 0; o < a.length; o++)
+        h[o] = e * this.butcherTableau.b[s] * i[s][o] + a[o];
+    return this;
+  }
+  step(e, r, a) {
+    const h = new Float64Array(a.length);
+    return this.stepInto(e, r, a, h), h;
+  }
+  stepsInto(e, r, a, h, i) {
+    for (let s = 0; s < this.order; s++)
+      i[s] = h[s];
+    for (let s = 0; s < e; s++)
+      this.stepInto(r, a, i, i);
+    return this;
+  }
+  steps(e, r, a, h) {
+    const i = new Float64Array(h.length);
+    return this.stepsInto(e, r, a, h, i), i;
+  }
+  k(e, r, a, h, i) {
+    const s = h.slice();
+    for (let o = 0; o < e; o++)
+      for (let n = 0; n < h.length; n++)
+        s[n] += r * this.butcherTableau.a[e][o] * i[o][n];
+    return this.f(a + r * this.butcherTableau.c[e], s);
+  }
+}
+const t = new l(7);
+t.a[1][0] = 1 / 5;
+t.a[2][0] = 3 / 40;
+t.a[2][1] = 9 / 40;
+t.a[3][0] = 44 / 45;
+t.a[3][1] = -56 / 15;
+t.a[3][2] = 32 / 9;
+t.a[4][0] = 19372 / 6561;
+t.a[4][1] = -25360 / 2187;
+t.a[4][2] = 64448 / 6561;
+t.a[4][3] = -212 / 729;
+t.a[5][0] = 9017 / 3168;
+t.a[5][1] = -355 / 33;
+t.a[5][2] = 46732 / 5247;
+t.a[5][3] = 49 / 176;
+t.a[5][4] = -5103 / 18656;
+t.a[6][0] = 35 / 384;
+t.a[6][1] = 0;
+t.a[6][2] = 500 / 1113;
+t.a[6][3] = 125 / 192;
+t.a[6][4] = -2187 / 6784;
+t.a[6][5] = 11 / 84;
+t.makeItConsistent();
+t.b[0] = 35 / 384;
+t.b[1] = 0;
+t.b[2] = 500 / 1113;
+t.b[3] = 125 / 192;
+t.b[4] = -2187 / 6784;
+t.b[5] = 11 / 84;
+t.b[6] = 0;
+export {
+  l as ButcherTableau,
+  u as RungeKutta,
+  t as rkdp45ButcherTableau
+};
