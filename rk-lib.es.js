@@ -30,8 +30,8 @@ class l {
   makeItConsistent() {
     return this.a.forEach((r, e) => {
       this.c[e] = 0;
-      for (let a = 0; a < this.order; a++)
-        this.c[e] += r[a];
+      for (let h = 0; h < this.order; h++)
+        this.c[e] += r[h];
     }), this;
   }
 }
@@ -43,38 +43,41 @@ class d {
   get order() {
     return this.butcherTableau.order;
   }
-  stepInto(r, e, a, i) {
-    this.updateK(r, e, a);
-    for (let s = 0; s < a.length; s++) {
-      i[s] = a[s];
-      for (let h = 0; h < this.order; h++)
-        i[s] += r * this.butcherTableau.b[h] * this.k[h][s];
+  stepInto(r, e, h, i) {
+    this.updateK(r, e, h);
+    for (let a = 0; a < h.length; a++) {
+      i[a] = h[a];
+      for (let s = 0; s < this.order; s++)
+        i[a] += r * this.butcherTableau.b[s] * this.k[s][a];
     }
     return this;
   }
-  step(r, e, a) {
-    const i = new Float64Array(a.length);
-    return this.stepInto(r, e, a, i), i;
+  step(r, e, h) {
+    const i = new Float64Array(h.length);
+    return this.stepInto(r, e, h, i), i;
   }
-  stepsInto(r, e, a, i, s) {
-    for (let h = 0; h < r; h++)
-      this.stepInto(e, a, i, s);
+  stepsInto(r, e, h, i, a) {
+    for (let s = 0; s < r; s++)
+      this.stepInto(e, h, i, a);
     if (r === 0)
-      for (let h = 0; h < i.length; h++)
-        s[h] = i[h];
+      for (let s = 0; s < i.length; s++)
+        a[s] = i[s];
     return this;
   }
-  steps(r, e, a, i) {
-    const s = new Float64Array(i.length);
-    return this.stepsInto(r, e, a, i, s), s;
+  steps(r, e, h, i) {
+    const a = new Float64Array(i.length);
+    return this.stepsInto(r, e, h, i, a), a;
   }
-  updateK(r, e, a) {
-    const i = new Float64Array(a.length);
-    for (let s = 0; s < this.order; s++) {
-      for (let h = 0; h < s; h++)
-        for (let o = 0; o < a.length; o++)
-          i[o] = a[o] + r * this.butcherTableau.a[s][h] * this.k[h][o];
-      this.k[s] = this.f(e + r * this.butcherTableau.c[s], i);
+  updateK(r, e, h) {
+    const i = new Float64Array(h.length);
+    for (let a = 0; a < this.order; a++) {
+      for (let s = 0; s < h.length; s++) {
+        i[s] = 0;
+        for (let o = 0; o < a; o++)
+          i[s] += this.butcherTableau.a[a][o] * this.k[o][s];
+        i[s] *= r, i[s] += h[s];
+      }
+      this.k[a] = this.f(e + r * this.butcherTableau.c[a], i);
     }
   }
 }
