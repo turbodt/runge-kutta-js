@@ -1,0 +1,27 @@
+{
+    "name": "@zanny/rk-integrator",
+    "version": "1.0.0",
+    "description": "Library containg explicit Runge Kutta integrators",
+    "license": "ISC",
+    "author": "Daniel Torres",
+    "main": "rk-lib.cjs.js",
+    "module": "rk-lib.es.js",
+    "types": "index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "require": "./rk-lib.cjs.js",
+            "import": "./rk-lib.es.js"
+        }
+    },
+    "files": ["dist"],
+    "scripts": {
+        "build": "tsc && vite build"
+    },
+    "devDependencies": {
+        "patch-package": "^8.0.1",
+        "typescript": "^5.8.2",
+        "vite": "^7.2.2",
+        "vite-plugin-dts": "^4.5.4"
+    }
+}
