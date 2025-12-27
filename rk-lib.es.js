@@ -1,11 +1,11 @@
 class l {
-  constructor(r) {
-    this.order = r, this.data = new Float64Array(
+  constructor(s) {
+    this.order = s, this.data = new Float64Array(
       this.order * this.order + this.order + this.order
     ), this.a = [];
-    for (let e = 0; e < this.order; e++)
+    for (let r = 0; r < this.order; r++)
       this.a.push(
-        this.data.subarray(e * this.order, (e + 1) * this.order)
+        this.data.subarray(r * this.order, (r + 1) * this.order)
       );
     this.b = this.data.subarray(
       this.order * this.order,
@@ -20,64 +20,63 @@ class l {
   c;
   data;
   toString() {
-    let r = "";
-    for (let e = 0; e < this.order; e++)
-      r += `${this.c[e]} : `, r += `${this.a[e].join(" ")}`, r += `
+    let s = "";
+    for (let r = 0; r < this.order; r++)
+      s += `${this.c[r]} : `, s += `${this.a[r].join(" ")}`, s += `
 `;
-    return r += `	 : ${this.b.join(" ")}
-`, r;
+    return s += `	 : ${this.b.join(" ")}
+`, s;
   }
   makeItConsistent() {
-    return this.a.forEach((r, e) => {
-      this.c[e] = 0;
-      for (let h = 0; h < this.order; h++)
-        this.c[e] += r[h];
+    return this.a.forEach((s, r) => {
+      this.c[r] = 0;
+      for (let a = 0; a < this.order; a++)
+        this.c[r] += s[a];
     }), this;
   }
 }
 class d {
-  constructor(r, e) {
-    this.butcherTableau = r, this.f = e, this.k = new Array(this.order);
+  constructor(s, r) {
+    this.butcherTableau = s, this.f = r, this.k = new Array(this.order);
   }
   k;
   get order() {
     return this.butcherTableau.order;
   }
-  stepInto(r, e, h, i) {
-    this.updateK(r, e, h);
-    for (let a = 0; a < h.length; a++) {
-      i[a] = h[a];
-      for (let s = 0; s < this.order; s++)
-        i[a] += r * this.butcherTableau.b[s] * this.k[s][a];
+  stepInto(s, r, a, i) {
+    this.updateK(s, r, a);
+    for (let e = 0; e < a.length; e++) {
+      i[e] = a[e];
+      for (let h = 0; h < this.order; h++)
+        i[e] += s * this.butcherTableau.b[h] * this.k[h][e];
     }
     return this;
   }
-  step(r, e, h) {
-    const i = new Float64Array(h.length);
-    return this.stepInto(r, e, h, i), i;
+  step(s, r, a) {
+    const i = new Float64Array(a.length);
+    return this.stepInto(s, r, a, i), i;
   }
-  stepsInto(r, e, h, i, a) {
-    for (let s = 0; s < r; s++)
-      this.stepInto(e, h, i, a);
-    if (r === 0)
-      for (let s = 0; s < i.length; s++)
-        a[s] = i[s];
+  stepsInto(s, r, a, i, e) {
+    for (let h = 0; h < i.length; h++)
+      e[h] = i[h];
+    for (; s > 0; s--)
+      this.stepInto(r, a, e, e), a += r;
     return this;
   }
-  steps(r, e, h, i) {
-    const a = new Float64Array(i.length);
-    return this.stepsInto(r, e, h, i, a), a;
+  steps(s, r, a, i) {
+    const e = new Float64Array(i.length);
+    return this.stepsInto(s, r, a, i, e), e;
   }
-  updateK(r, e, h) {
-    const i = new Float64Array(h.length);
-    for (let a = 0; a < this.order; a++) {
-      for (let s = 0; s < h.length; s++) {
-        i[s] = 0;
-        for (let o = 0; o < a; o++)
-          i[s] += this.butcherTableau.a[a][o] * this.k[o][s];
-        i[s] *= r, i[s] += h[s];
+  updateK(s, r, a) {
+    const i = new Float64Array(a.length);
+    for (let e = 0; e < this.order; e++) {
+      for (let h = 0; h < a.length; h++) {
+        i[h] = 0;
+        for (let o = 0; o < e; o++)
+          i[h] += this.butcherTableau.a[e][o] * this.k[o][h];
+        i[h] *= s, i[h] += a[h];
       }
-      this.k[a] = this.f(e + r * this.butcherTableau.c[a], i);
+      this.k[e] = this.f(r + s * this.butcherTableau.c[e], i);
     }
   }
 }
